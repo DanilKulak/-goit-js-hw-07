@@ -3,27 +3,29 @@ import { galleryItems } from './gallery-items.js';
 
 console.log(galleryItems);
 
-document.querySelector('.gallery').addEventListener('click', (event) => {
-    event.preventDefault();
+const gallery = document.querySelector('.gallery');
 
-    if (event.target.classList.contains('gallery__image')) {
-        const largeImageSource = event.target.getAttribute('data-source');
-        const lightbox = basicLightbox.create(`
-        <img src="${largeImageSource}" wigth="800" height="600">
-        `);
+galleryItems.forEach((item) => {
+  const galleryItem = document.createElement('li');
+  galleryItem.classList.add('gallery__item');
 
-        lightbox.show();
-    }
+  const link = document.createElement('a');
+  link.classList.add('gallery__link');
+  link.href = item.original;
+
+  const image = document.createElement('img');
+  image.classList.add('gallery__image');
+  image.src = item.preview;
+  image.alt = item.description;
+
+  link.appendChild(image);
+  galleryItem.appendChild(link);
+  gallery.appendChild(galleryItem);
 });
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') {
-        basicLightbox.close();
-    }
-});
 
-const gallery = new SimpleLightbox('.gallery a', {
-  captionsData: 'alt',
-  captionDelay: 250,
+const lightbox = new SimpleLightbox('.gallery a', {
+  captions: true,
+  captionDelay: 250, 
 });
 
 
